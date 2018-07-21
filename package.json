@@ -1,0 +1,44 @@
+{
+  "name": "thoughts-cli",
+  "version": "1.0.0",
+  "description": "Log notes, thoughts, or other arbitrary text into timestamped files from the command line.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "bin": {
+    "thought": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonaibrahim/thoughts.git"
+  },
+  "keywords": [
+    "write",
+    "writing",
+    "markdown",
+    "cli",
+    "node",
+    "javascript",
+    "typescript"
+  ],
+  "author": "Jason Ibrahim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jasonaibrahim/thoughts/issues"
+  },
+  "homepage": "https://github.com/jasonaibrahim/thoughts#readme",
+  "dependencies": {
+    "@types/minimist": "^1.2.0",
+    "chalk": "^2.4.1",
+    "configstore": "^3.1.2",
+    "lodash": "^4.17.10",
+    "minimist": "^1.2.0",
+    "typescript": "^2.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.5.2"
+  }
+}
