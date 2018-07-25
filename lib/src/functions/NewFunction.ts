@@ -1,8 +1,10 @@
-import * as fs from "fs";
+import * as fs from 'fs';
 import {CLIFunction} from './CLIFunction';
-import moment = require('moment');
 import * as path from 'path';
-import chalk from 'chalk';
+import {Logger} from '../loggers/Logger';
+import moment = require('moment');
+import {ConfigKeys} from './index';
+import {exec} from 'child_process';
 
 export class NewFunction extends CLIFunction {
   
@@ -14,22 +16,38 @@ export class NewFunction extends CLIFunction {
     }
   }
   
-  private static createFile(filename: string, directory: string, data: string) {
-    const pathToFile = path.join(directory, filename);
-    fs.writeFileSync(pathToFile, data);
-  }
-  
-  private static printSuccessMessage() {
-    console.log(chalk.green('Saved.'));
+  private static createFile(fullPathToFile: string, data: string) {
+    fs.writeFileSync(fullPathToFile, data);
   }
   
   run() {
-    NewFunction.createDirIfNotExists(this.storagePath);
+    this.testWillRun();
+    
     const timestamp = moment().format();
-    const text = this.parseTextFromArgs();
-    const data = `${moment().format('MMMM Do YYYY, h:mm:ss a')}\n\n${text}`;
-    NewFunction.createFile(`${timestamp}.${this.parseFileExtensionFromArgs()}`, this.storagePath, data);
-    NewFunction.printSuccessMessage();
+    const filename = `${timestamp}.${this.parseFileExtensionFromArgs()}`;
+    const seed = this.parseTextFromArgs();
+    const text = `${moment().format('MMMM Do YYYY, h:mm:ss a')}\n\n${seed}`;
+    const pathToFile = path.join(this.storagePath, filename);
+    NewFunction.createFile(pathToFile, text);
+    
+    this.didFinishRunning(pathToFile);
+  }
+  
+  private testWillRun() {
+    NewFunction.createDirIfNotExists(this.storagePath);
+  }
+  
+  private didFinishRunning(pathToFile: string) {
+    if (this.config.get(ConfigKeys.Editor)) {
+      const cmd = `${this.config.get(ConfigKeys.Editor)} ${pathToFile}`;
+      exec(cmd, err => {
+        if (err) {
+          Logger.printErrorMessage(err.message);
+        }
+      });
+    } else {
+      Logger.printSuccessMessage(pathToFile);
+    }
   }
   
   private parseFileExtensionFromArgs(): string {
@@ -42,7 +60,7 @@ export class NewFunction extends CLIFunction {
   
   private parseTextFromArgs(): string {
     if (this.args && this.args.params && this.args.params._) {
-      return this.args.params._[1];
+      return this.args.params._[1] || '';
     } else {
       return '';
     }

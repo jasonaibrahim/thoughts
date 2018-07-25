@@ -1,13 +1,16 @@
 import {CLIArgs, CLIFunctionType, ICLIFunction} from './index';
+import * as ConfigStore from 'configstore';
 
 export class CLIFunction implements ICLIFunction {
   
   protected readonly args: CLIArgs;
   protected readonly storagePath: string;
+  protected readonly config: ConfigStore;
   
-  constructor(args: CLIArgs, storagePath: string) {
+  constructor(args: CLIArgs, namespace: string, storagePath: string) {
     this.args = args;
     this.storagePath = storagePath;
+    this.config = new ConfigStore(namespace);
   }
   
   getArgs(): CLIArgs {
@@ -18,6 +21,21 @@ export class CLIFunction implements ICLIFunction {
     return this.args.function;
   }
   
+  getConfig(key: string): any {
+    return this.config.get(key);
+  }
+  
+  setConfig(key: string, value: any) {
+    this.config.set(key, value);
+  }
+  
+  getConfigPath(): string {
+    return this.config.path;
+  }
+  
+  /**
+   * No-op, designed for subclasses to take over.
+   */
   run(): void {
   }
 }

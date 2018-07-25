@@ -32,6 +32,8 @@
   },
   "homepage": "https://github.com/jasonaibrahim/thoughts#readme",
   "dependencies": {
+    "@types/configstore": "^2.1.1",
+    "@types/lodash": "^4.14.113",
     "chalk": "^2.4.1",
     "configstore": "^3.1.2",
     "lodash": "^4.17.10",
@@ -39,12 +41,12 @@
     "moment": "^2.22.2"
   },
   "devDependencies": {
-    "ts-node": "^7.0.0",
-    "typescript": "^2.9.2",
+    "@types/jasmine": "^2.8.8",
     "@types/minimist": "^1.2.0",
     "@types/moment": "^2.13.0",
-    "@types/jasmine": "^2.8.8",
     "@types/node": "^10.5.2",
-    "jasmine": "^3.1.0"
+    "jasmine": "^3.1.0",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2"
   }
 }

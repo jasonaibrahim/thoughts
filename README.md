@@ -8,6 +8,13 @@ Create a new thought
 $ thought new
 ```
 
+Create and open a Thought quickly
+```bash
+$ thought new | vi
+$ thought new | code
+$ thought new | nano
+```
+
 Show your last thought
 ```bash
 $ thought last
@@ -34,4 +41,15 @@ $ thought open
 Open a single thought in the system default text editor
 ```bash
 $ thought open <id> # e.g. thought open a9048243
+```
+
+Set Config
+```bash
+thoughts config --foo=bar
+```
+
+To set the default text editor that opens when you call `thought new`:
+
+```bash
+thoughts config --editor code
 ```

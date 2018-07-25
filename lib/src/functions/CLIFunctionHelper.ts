@@ -4,8 +4,11 @@ import {NewFunction} from './NewFunction';
 import {CLIFunction} from './CLIFunction';
 import {StoragePathUndefinedError} from '../errors';
 import * as path from 'path';
+import {ConfigFunction} from './ConfigFunction';
 
 export class CLIFunctionHelper {
+  
+  static readonly ARG_KEY = '_';
   
   private static readonly DefaultStoragePath = path.join(__dirname, '..', 'data');
   
@@ -14,38 +17,41 @@ export class CLIFunctionHelper {
     params: null,
   };
   
-  private static initNewFunctionParser(args: CLIArgs, storagePath: string): NewFunction {
-    return new NewFunction(args, storagePath);
+  private static initNewFunctionParser(args: CLIArgs, storagePath: string, namespace: string): NewFunction {
+    return new NewFunction(args, storagePath, namespace);
+  }
+  
+  private static initConfigFunctionParser(args: CLIArgs, storagePath: string, namespace: string): ConfigFunction {
+    return new ConfigFunction(args, storagePath, namespace);
   }
   
   private static initHelpFunctionParser(args: CLIArgs = this.DefaultParserArgs,
-                                        storagePath: string): HelpFunction {
-    return new HelpFunction(args, storagePath);
+                                        storagePath: string,
+                                        namespace: string): HelpFunction {
+    return new HelpFunction(args, storagePath, namespace);
   }
   
   static instantiateFromArgs(cli: { [key: string]: string },
+                             namespace: string,
                              storagePath: string = this.DefaultStoragePath): CLIFunction {
-    const func = cli._[0] as CLIFunctionType;
+    
+    const func = cli[CLIFunctionHelper.ARG_KEY][0] as CLIFunctionType;
     
     if (!storagePath) {
       throw new StoragePathUndefinedError();
     }
-    
-    if (cli) {
-      const args: CLIArgs = {
-        function: func,
-        params: cli
-      };
-      switch (args.function) {
-        case CLIFunctionType.Help:
-          return this.initHelpFunctionParser(args, storagePath);
-        case CLIFunctionType.New:
-          return this.initNewFunctionParser(args, storagePath);
-        default:
-          return this.initHelpFunctionParser(undefined, storagePath);
-      }
-    } else {
-      return this.initHelpFunctionParser(undefined, storagePath);
+  
+    const args: CLIArgs = {function: func, params: cli};
+  
+    switch (args.function) {
+      case CLIFunctionType.Help:
+        return this.initHelpFunctionParser(args, storagePath, namespace);
+      case CLIFunctionType.New:
+        return this.initNewFunctionParser(args, storagePath, namespace);
+      case CLIFunctionType.Config:
+        return this.initConfigFunctionParser(args, storagePath, namespace);
+      default:
+        return this.initHelpFunctionParser(undefined, storagePath, namespace);
     }
   }
 }

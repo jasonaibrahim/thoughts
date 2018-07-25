@@ -4,10 +4,15 @@ export interface ICLIFunction {
 
 export enum CLIFunctionType {
   New = 'new',
-  Help = 'help'
+  Help = 'help',
+  Config = 'config'
 }
 
 export interface CLIArgs {
   function: CLIFunctionType,
   params: { [key: string]: string } | null
+}
+
+export enum ConfigKeys {
+  Editor = 'editor'
 }

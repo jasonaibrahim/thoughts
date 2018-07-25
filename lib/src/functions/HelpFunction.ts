@@ -1,7 +1,11 @@
-import chalk from 'chalk';
 import {CLIFunction} from './CLIFunction';
+import {Logger} from '../loggers/Logger';
 
 export class HelpFunction extends CLIFunction {
+  
+  /**
+   * Prints the help text
+   */
   run() {
     this.printHelpText();
   }
@@ -33,6 +37,6 @@ export class HelpFunction extends CLIFunction {
     
     ==
     `;
-    console.log(chalk.green(text));
+    Logger.printSuccessMessage(text);
   }
 }
