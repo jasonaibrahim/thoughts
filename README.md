@@ -28,7 +28,7 @@ $ thought list --all
 
 Open the thought folder in the system default text editor
 ```bash
-# thought open
+$ thought open
 ```
 
 Open a single thought in the system default text editor
