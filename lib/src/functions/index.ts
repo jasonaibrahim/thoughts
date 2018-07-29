@@ -1,11 +1,15 @@
 export interface ICLIFunction {
   run(): void;
+  functionWillRun(): void;
+  function(): Promise<any>;
+  functionDidRun(data: any): void;
 }
 
 export enum CLIFunctionType {
   New = 'new',
   Help = 'help',
-  Config = 'config'
+  Config = 'config',
+  Open = 'open'
 }
 
 export interface CLIArgs {

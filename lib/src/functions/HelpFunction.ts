@@ -6,8 +6,8 @@ export class HelpFunction extends CLIFunction {
   /**
    * Prints the help text
    */
-  run() {
-    this.printHelpText();
+  function() {
+    return Promise.resolve(this.printHelpText());
   }
   
   private printHelpText() {
@@ -25,7 +25,7 @@ export class HelpFunction extends CLIFunction {
       > Saved.
       
     open - Open a Thought.
-      
+    
     config - Set defaults such as where to store files and default file extensions.
     
     help - Show this help dialog.

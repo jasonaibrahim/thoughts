@@ -5,6 +5,7 @@ import {CLIFunction} from './CLIFunction';
 import {StoragePathUndefinedError} from '../errors';
 import * as path from 'path';
 import {ConfigFunction} from './ConfigFunction';
+import {OpenFunction} from './OpenFunction';
 
 export class CLIFunctionHelper {
   
@@ -31,6 +32,10 @@ export class CLIFunctionHelper {
     return new HelpFunction(args, storagePath, namespace);
   }
   
+  private static initOpenFunctionParser(args: CLIArgs, storagePath: string, namespace: string): ConfigFunction {
+    return new OpenFunction(args, storagePath, namespace);
+  }
+  
   static instantiateFromArgs(cli: { [key: string]: string },
                              namespace: string,
                              storagePath: string = this.DefaultStoragePath): CLIFunction {
@@ -50,6 +55,8 @@ export class CLIFunctionHelper {
         return this.initNewFunctionParser(args, storagePath, namespace);
       case CLIFunctionType.Config:
         return this.initConfigFunctionParser(args, storagePath, namespace);
+      case CLIFunctionType.Open:
+        return this.initOpenFunctionParser(args, storagePath, namespace);
       default:
         return this.initHelpFunctionParser(undefined, storagePath, namespace);
     }

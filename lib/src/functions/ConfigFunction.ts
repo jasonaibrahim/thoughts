@@ -9,7 +9,7 @@ export class ConfigFunction extends CLIFunction {
   /**
    * Set configuration via arguments passed
    */
-  run() {
+  function(): Promise<any> {
     if (this.args.params) {
       const config = intersection(
         Object.keys(this.args.params),
@@ -24,5 +24,6 @@ export class ConfigFunction extends CLIFunction {
       });
       Logger.printSuccessMessage('Saved.')
     }
+    return Promise.resolve();
   }
 }

@@ -20,24 +20,21 @@ export class NewFunction extends CLIFunction {
     fs.writeFileSync(fullPathToFile, data);
   }
   
-  run() {
-    this.testWillRun();
-    
+  functionWillRun() {
+    NewFunction.createDirIfNotExists(this.storagePath);
+  }
+  
+  function(): Promise<any> {
     const timestamp = moment().format();
     const filename = `${timestamp}.${this.parseFileExtensionFromArgs()}`;
     const seed = this.parseTextFromArgs();
     const text = `${moment().format('MMMM Do YYYY, h:mm:ss a')}\n\n${seed}`;
     const pathToFile = path.join(this.storagePath, filename);
     NewFunction.createFile(pathToFile, text);
-    
-    this.didFinishRunning(pathToFile);
+    return Promise.resolve(pathToFile);
   }
   
-  private testWillRun() {
-    NewFunction.createDirIfNotExists(this.storagePath);
-  }
-  
-  private didFinishRunning(pathToFile: string) {
+  functionDidRun(pathToFile: string) {
     if (this.config.get(ConfigKeys.Editor)) {
       const cmd = `${this.config.get(ConfigKeys.Editor)} ${pathToFile}`;
       exec(cmd, err => {

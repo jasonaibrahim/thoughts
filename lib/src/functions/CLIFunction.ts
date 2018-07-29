@@ -36,6 +36,21 @@ export class CLIFunction implements ICLIFunction {
   /**
    * No-op, designed for subclasses to take over.
    */
-  run(): void {
+  run() {
+    this.functionWillRun();
+    
+    this.function().then(data => {
+      this.functionDidRun(data);
+    });
+  }
+  
+  functionWillRun(): void {
+  }
+  
+  function(): Promise<any> {
+    return Promise.resolve();
+  }
+  
+  functionDidRun(data: any) {
   }
 }
