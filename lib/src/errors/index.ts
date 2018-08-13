@@ -5,7 +5,7 @@ export class NotEnoughArgumentsError extends Error {
 
 export class UnknownFunctionError extends Error {
   name = 'UnknownFunctionException';
-  
+
   constructor(func: string) {
     super();
     this.message = `"${func}" is not a valid CLI function`;

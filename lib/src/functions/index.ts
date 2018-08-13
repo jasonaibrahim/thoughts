@@ -1,7 +1,10 @@
 export interface ICLIFunction {
   run(): void;
+
   functionWillRun(): void;
+
   function(): Promise<any>;
+
   functionDidRun(data: any): void;
 }
 
@@ -16,8 +19,4 @@ export enum CLIFunctionType {
 export interface CLIArgs {
   function: CLIFunctionType,
   params: { [key: string]: string } | null
-}
-
-export enum ConfigKeys {
-  Editor = 'editor'
 }

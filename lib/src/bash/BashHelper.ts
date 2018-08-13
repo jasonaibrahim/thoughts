@@ -1,19 +1,23 @@
 import Configstore = require('configstore');
-import {ConfigKeys} from '../functions';
-import {exec} from "child_process";
+import {exec} from 'child_process';
 import {Logger} from '../loggers/Logger';
+import {ConfigKey} from '../functions/ConfigFunction';
 
 export class BashHelper {
+
+  static readonly DefaultEditor = 'open';
+
   static openFileInDefaultEditor(config: Configstore, pathToFile: string) {
-    if (config.get(ConfigKeys.Editor)) {
-      const cmd = `${config.get(ConfigKeys.Editor)} ${pathToFile}`;
-      exec(cmd, err => {
-        if (err) {
-          Logger.printErrorMessage(err.message);
-        }
-      });
-    } else {
-      Logger.printSuccessMessage(pathToFile);
+    let editor = config.get(ConfigKey.Editor);
+    if (!editor) {
+      editor = BashHelper.DefaultEditor;
     }
+    const cmd = `${editor} ${pathToFile}`;
+    Logger.printSuccessMessage(`Sending command "${cmd}"`);
+    exec(cmd, err => {
+      if (err) {
+        Logger.printErrorMessage(err.message);
+      }
+    });
   }
 }

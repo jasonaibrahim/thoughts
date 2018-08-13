@@ -52,6 +52,6 @@ describe('SearchFunction', () => {
           done();
         });
       });
-    }, 1999999);
+    });
   });
 });

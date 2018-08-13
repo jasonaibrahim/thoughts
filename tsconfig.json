@@ -10,7 +10,7 @@
     "module": "commonjs",
     "outDir": "./",
     "sourceMap": false,
-    "strict": true
+    "strict": false
   },
   "include": [
     "**/*.ts"

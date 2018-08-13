@@ -3,10 +3,6 @@ import * as fs from 'fs';
 import {forkJoin, Observable, of, Subscriber} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import * as path from 'path';
-import {CLIFunctionHelper} from './CLIFunctionHelper';
-import * as child_process from "child_process";
-import {ConfigKeys} from './index';
-import {exec} from "child_process";
 import {Logger} from '../loggers/Logger';
 import {BashHelper} from '../bash/BashHelper';
 
@@ -27,6 +23,10 @@ export class SearchFunction extends CLIFunction {
 
   private _index: any;
 
+  get index(): any {
+    return this._index;
+  }
+
   private static getIndexableDocFromFileContents(fileName: string, fileContents: string): Observable<IndexableDoc> {
     return of({
       id: fileName,
@@ -35,14 +35,9 @@ export class SearchFunction extends CLIFunction {
     });
   }
 
-  get index(): any {
-    return this._index;
-  }
-
   function(): Promise<any> {
-    if (this.args.params) {
-      const params = this.args.params['_'] as any;
-      const query = params.slice(1).join(' ');
+    const query = this.parseQueryFromArgs();
+    if (query) {
       return this.find(query).toPromise();
     } else {
       return Promise.reject(new Error('No query was provided'));
@@ -50,7 +45,10 @@ export class SearchFunction extends CLIFunction {
   }
 
   functionDidRun(data: SearchResult[]) {
+    Logger.printSuccessMessage(`${data.length} results found for query "${this.parseQueryFromArgs()}"`);
+    Logger.printSuccessMessage(`The following files will be opened in your configured editor:`);
     data.forEach(result => {
+      Logger.printSuccessMessage(result.ref);
       this.openSearchResultInEditor(result.ref);
     });
   }
@@ -59,6 +57,15 @@ export class SearchFunction extends CLIFunction {
     return this.initializeIndex().pipe(map(() => {
       return this.index.search(query);
     }));
+  }
+
+  private parseQueryFromArgs(): string {
+    if (this.args.params) {
+      const params = this.args.params['_'] as any;
+      return params.slice(1).join(' ');
+    } else {
+      return '';
+    }
   }
 
   private openSearchResultInEditor(pathToFile: string) {
