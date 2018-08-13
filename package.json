@@ -1,6 +1,6 @@
 {
-  "name": "thoughts-cli",
-  "version": "1.0.0",
+  "name": "nothoughts",
+  "version": "0.0.1",
   "description": "Log notes, thoughts, or other arbitrary text into timestamped files from the command line.",
   "main": "index.js",
   "scripts": {

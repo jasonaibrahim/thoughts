@@ -1,0 +1,5 @@
+lib/data
+.idea
+test
+spec
+**/*.ts
