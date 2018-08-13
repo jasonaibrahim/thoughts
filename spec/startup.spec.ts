@@ -1,5 +1,7 @@
 import * as fs from 'fs';
 import {run} from '../lib/src/main';
+import {CLIFunctionHelper} from '../lib/src/functions/CLIFunctionHelper';
+import {DummyCLIFunction} from './DummyCLIFunction';
 
 describe('Startup', () => {
   describe('Parsing command line args', () => {
@@ -10,6 +12,7 @@ describe('Startup', () => {
       });
       spyOn(fs, 'existsSync').and.stub();
       spyOn(fs, 'mkdirSync').and.stub();
+      spyOn(CLIFunctionHelper, 'instantiateFromArgs').and.returnValue(new DummyCLIFunction());
       
       run();
       
@@ -22,6 +25,7 @@ describe('Startup', () => {
       });
       spyOn(fs, 'existsSync').and.stub();
       spyOn(fs, 'mkdirSync').and.stub();
+      spyOn(CLIFunctionHelper, 'instantiateFromArgs').and.returnValue(new DummyCLIFunction());
       expect(run).not.toThrow();
     });
   });

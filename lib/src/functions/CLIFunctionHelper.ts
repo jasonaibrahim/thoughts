@@ -6,6 +6,7 @@ import {StoragePathUndefinedError} from '../errors';
 import * as path from 'path';
 import {ConfigFunction} from './ConfigFunction';
 import {OpenFunction} from './OpenFunction';
+import {SearchFunction} from './SearchFunction';
 
 export class CLIFunctionHelper {
   
@@ -18,22 +19,26 @@ export class CLIFunctionHelper {
     params: null,
   };
   
-  private static initNewFunctionParser(args: CLIArgs, storagePath: string, namespace: string): NewFunction {
-    return new NewFunction(args, storagePath, namespace);
+  static initNewFunctionParser(args: CLIArgs, namespace: string, storagePath: string): NewFunction {
+    return new NewFunction(args, namespace, storagePath);
   }
   
-  private static initConfigFunctionParser(args: CLIArgs, storagePath: string, namespace: string): ConfigFunction {
-    return new ConfigFunction(args, storagePath, namespace);
+  static initConfigFunctionParser(args: CLIArgs, namespace: string, storagePath: string): ConfigFunction {
+    return new ConfigFunction(args, namespace, storagePath);
   }
   
-  private static initHelpFunctionParser(args: CLIArgs = this.DefaultParserArgs,
-                                        storagePath: string,
-                                        namespace: string): HelpFunction {
-    return new HelpFunction(args, storagePath, namespace);
+  static initHelpFunctionParser(args: CLIArgs = this.DefaultParserArgs,
+                                        namespace: string,
+                                        storagePath: string): HelpFunction {
+    return new HelpFunction(args, namespace, storagePath);
   }
   
-  private static initOpenFunctionParser(args: CLIArgs, storagePath: string, namespace: string): ConfigFunction {
-    return new OpenFunction(args, storagePath, namespace);
+  static initOpenFunctionParser(args: CLIArgs, namespace: string, storagePath: string): OpenFunction {
+    return new OpenFunction(args, namespace, storagePath);
+  }
+  
+  static initSearchFunctionParser(args: CLIArgs, namespace: string, storagePath: string): SearchFunction {
+    return new SearchFunction(args, namespace, storagePath);
   }
   
   static instantiateFromArgs(cli: { [key: string]: string },
@@ -50,15 +55,17 @@ export class CLIFunctionHelper {
   
     switch (args.function) {
       case CLIFunctionType.Help:
-        return this.initHelpFunctionParser(args, storagePath, namespace);
+        return this.initHelpFunctionParser(args, namespace, storagePath);
       case CLIFunctionType.New:
-        return this.initNewFunctionParser(args, storagePath, namespace);
+        return this.initNewFunctionParser(args, namespace, storagePath);
       case CLIFunctionType.Config:
-        return this.initConfigFunctionParser(args, storagePath, namespace);
+        return this.initConfigFunctionParser(args, namespace, storagePath);
       case CLIFunctionType.Open:
-        return this.initOpenFunctionParser(args, storagePath, namespace);
+        return this.initOpenFunctionParser(args, namespace, storagePath);
+      case CLIFunctionType.Search:
+        return this.initSearchFunctionParser(args, namespace, storagePath);
       default:
-        return this.initHelpFunctionParser(undefined, storagePath, namespace);
+        return this.initHelpFunctionParser(undefined, namespace, storagePath);
     }
   }
 }

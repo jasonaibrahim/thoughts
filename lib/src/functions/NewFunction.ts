@@ -5,6 +5,7 @@ import {Logger} from '../loggers/Logger';
 import moment = require('moment');
 import {ConfigKeys} from './index';
 import {exec} from 'child_process';
+import {BashHelper} from '../bash/BashHelper';
 
 export class NewFunction extends CLIFunction {
   
@@ -35,16 +36,7 @@ export class NewFunction extends CLIFunction {
   }
   
   functionDidRun(pathToFile: string) {
-    if (this.config.get(ConfigKeys.Editor)) {
-      const cmd = `${this.config.get(ConfigKeys.Editor)} ${pathToFile}`;
-      exec(cmd, err => {
-        if (err) {
-          Logger.printErrorMessage(err.message);
-        }
-      });
-    } else {
-      Logger.printSuccessMessage(pathToFile);
-    }
+    BashHelper.openFileInDefaultEditor(this.config, pathToFile);
   }
   
   private parseFileExtensionFromArgs(): string {

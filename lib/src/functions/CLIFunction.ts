@@ -6,10 +6,12 @@ export class CLIFunction implements ICLIFunction {
   protected readonly args: CLIArgs;
   protected readonly storagePath: string;
   protected readonly config: ConfigStore;
+  protected readonly namespace: string;
   
   constructor(args: CLIArgs, namespace: string, storagePath: string) {
     this.args = args;
     this.storagePath = storagePath;
+    this.namespace = namespace;
     this.config = new ConfigStore(namespace);
   }
   

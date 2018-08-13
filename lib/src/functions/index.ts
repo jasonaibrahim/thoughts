@@ -9,7 +9,8 @@ export enum CLIFunctionType {
   New = 'new',
   Help = 'help',
   Config = 'config',
-  Open = 'open'
+  Open = 'open',
+  Search = 'search'
 }
 
 export interface CLIArgs {

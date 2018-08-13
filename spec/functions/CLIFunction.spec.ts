@@ -10,6 +10,7 @@ const path = require('path');
 
 let namespace = 'thoughts-cli-test';
 let args: CLIArgs;
+let storagePath = path.join(__dirname, '..', '..', 'test', 'data');
 
 describe('CLI Parsing', () => {
   
@@ -34,19 +35,19 @@ describe('CLI Parsing', () => {
   
   it('should accept a CLIArgs object as a constructor argument', () => {
     args.function = CLIFunctionType.Help;
-    const functionUnderTest = new CLIFunction(args, namespace, '');
+    const functionUnderTest = new CLIFunction(args, namespace, storagePath);
     expect(functionUnderTest.getArgs()).toEqual(args);
   });
   
   it('should accept a Help Function type of CLIFunction', () => {
     args.function = CLIFunctionType.Help;
-    const functionUnderTest = new CLIFunction(args, namespace, '');
+    const functionUnderTest = new CLIFunction(args, namespace, storagePath);
     expect(functionUnderTest.getFunction()).toEqual(CLIFunctionType.Help);
   });
   
   it('should accept a New Function type of CLIFunction', () => {
     args.function = CLIFunctionType.New;
-    const functionUnderTest = new CLIFunction(args, namespace, '');
+    const functionUnderTest = new CLIFunction(args, namespace, storagePath);
     expect(functionUnderTest.getFunction()).toEqual(CLIFunctionType.New);
   });
 });
@@ -73,7 +74,7 @@ describe('Configuration', () => {
   
   it('should store config under the package name namespace', () => {
     args.function = CLIFunctionType.Help;
-    const functionUnderTest = new CLIFunction(args, namespace, '');
+    const functionUnderTest = new CLIFunction(args, namespace, storagePath);
     
     expect(functionUnderTest.getConfigPath()).toContain(namespace);
   });
